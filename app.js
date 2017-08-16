@@ -26,14 +26,14 @@ app.use(session({
 	saveUninitialized: false
 }));
 
-app.use(bodyParser.urlencoded({ 
-	extended: false 
+app.use(bodyParser.urlencoded({
+	extended: false
 }));
 
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  return res.sendFile(`${__dirname}/public/index.html`);
+  return res.send('hello world to the coolest api');
 });
 
 app.get('/api/v1/drive', driveApi.getAccess);
