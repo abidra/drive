@@ -7,15 +7,15 @@ const api = require('../client_id.json');
 const ClientId = api.web.client_id;
 const ClientSecret = api.web.client_secret;
 const RedirectionUrl = "http://localhost:4040/oauthCallback";
-const oauth2Client = new OAuth2( ClientId, ClientSecret, RedirectionUrl ); 
+const oauth2Client = new OAuth2( ClientId, ClientSecret, RedirectionUrl );
 
 const driveApi = {
 	getAccess(req, res) {
 		const scopes = [
-			'https://www.googleapis.com/auth/drive.appfolder', 
+			'https://www.googleapis.com/auth/drive.appfolder',
 			'https://www.googleapis.com/auth/drive.file'
 		];
-		
+
 		let url = oauth2Client.generateAuthUrl({
 			access_type: 'offline',
 			scope: scopes,
@@ -29,7 +29,7 @@ const driveApi = {
 		oauth2Client.getToken(code, function (err, tokens) {
  	 		// Now tokens contains an access_token and an optional refresh_token. Save them.
 			if (err) return console.error(err);
-			
+
 			oauth2Client.setCredentials(tokens);
 			req.session['credentials'] = tokens;
 			return res.json(req.session);
@@ -54,7 +54,7 @@ const driveApi = {
 		let data = fs.createReadStream(`${__dirname.replace('controllers', '')}/${file.path}`);
 
 		axios
-		.post('https://www.googleapis.com/upload/drive/v3/files?uploadType=media', data, {	
+		.post('https://www.googleapis.com/upload/drive/v3/files?uploadType=media', data, {
 			headers: {
 				'Content-Type': file.mimetype,
 				'Content-Length': file.size,
@@ -80,7 +80,7 @@ const driveApi = {
 		});
 	},
 
-	download() {
+	download(id) {
 		`https://www.googleapis.com/drive/v3/files/${id}?alt=media`
 	}
 }

@@ -14,6 +14,7 @@ var storage = multer.diskStorage({
 })
 
 var upload = multer({ storage: storage });
+var port = process.env.PORT || 8080;
 
 mongoose.connect('mongodb://localhost/drive');
 const app = express();
@@ -37,6 +38,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/v1/drive', driveApi.getAccess);
+app.get('/api/v1/drive/download', driveApi.download);
 app.get('/api/v1/drive/refresh', driveApi.refreshToken);
 app.get('/oauthCallback', driveApi.getTokens);
 app.post('/api/v1/drive/upload', upload.single('photo'), driveApi.upload);
@@ -44,4 +46,5 @@ app.get('/api/v1/users', usersApi.getAll);
 app.post('/api/v1/users', usersApi.store);
 
 var server = http.createServer(app);
-server.listen(4040);
+server.listen(port);
+console.log('Magic happens at http://localhost:' + port);
